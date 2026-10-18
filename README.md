@@ -9,10 +9,10 @@ Execute o arquivo `database.sql` no MySQL.
 Ajuste  o arquivo `.env` de acordo com suas configurações:
 
 ```env
-DB_HOST=localhost
-DB_USER=root
+DB_HOST=
+DB_USER=
 DB_PASSWORD=
-DB_DATABASE=voluntariado_db
+DB_DATABASE=
 
 PORT=3000
 JWT_SECRET=sua_chave_secreta
