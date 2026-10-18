@@ -1,0 +1,150 @@
+@baseURL = http://localhost:3000
+@tokenUser = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzdWFyaW9AaWZycy5lZHUuYnIiLCJyb2xlIjoidXNlciIsImlhdCI6MTc5MjM0NTA0MSwiZXhwIjoxNzkyMzQ4NjQxfQ.Gu3y3EPToOdQc2eO5k5Xe7sO38QRRnXuxQHpU6_RQzA
+@tokenAdmin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlmcnMuZWR1LmJyIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzkyMzQ1MDE1LCJleHAiOjE3OTIzNDg2MTV9.naYtLXj4JtOtsZAaHeg0Z9YCzM8bKQh53biJl2iljdA
+
+### Login usuário comum
+POST {{baseURL}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "usuario@ifrs.edu.br",
+  "password": "123456"
+}
+
+### Login administrador
+POST {{baseURL}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@ifrs.edu.br",
+  "password": "123456"
+}
+
+### Dashboard autenticado
+GET {{baseURL}}/dashboard
+Authorization: Bearer {{tokenUser}}
+
+### Dashboard sem token
+GET {{baseURL}}/dashboard
+
+### Área admin como usuário comum
+GET {{baseURL}}/dashboard/admin
+Authorization: Bearer {{tokenUser}}
+
+### Área admin como admin
+GET {{baseURL}}/dashboard/admin
+Authorization: Bearer {{tokenAdmin}}
+
+### Listar eventos (público)
+GET {{baseURL}}/events
+
+### Criar evento como usuário comum
+POST {{baseURL}}/events
+Authorization: Bearer {{tokenUser}}
+Content-Type: application/json
+
+{
+  "name": "Mutirão Ambiental",
+  "category": "ambiental",
+  "location": "IFRS",
+  "eventDate": "2026-12-01",
+  "capacity": 50
+}
+
+### Criar evento com dados inválidos como admin - 400
+POST {{baseURL}}/events
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "name": "Sem capacidade",
+  "category": "ambiental",
+  "location": "IFRS",
+  "eventDate": "2026-12-01",
+  "capacity": 0
+}
+
+### Criar evento como admin
+POST {{baseURL}}/events
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "name": "Mutirão Ambiental",
+  "category": "ambiental",
+  "location": "IFRS",
+  "eventDate": "2026-12-01",
+  "capacity": 50
+}
+
+### Atualizar evento como admin
+PUT {{baseURL}}/events/1
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "name": "Doação de sangue (atualizado)",
+  "category": "Doação",
+  "location": "Porto Alegre",
+  "eventDate": "2026-10-16",
+  "capacity": 500
+}
+
+### Excluir evento como admin
+DELETE {{baseURL}}/events/5
+Authorization: Bearer {{tokenAdmin}}
+
+### Listar voluntários
+GET {{baseURL}}/volunteers
+Authorization: Bearer {{tokenUser}}
+
+### Cadastrar voluntário
+POST {{baseURL}}/volunteers
+Authorization: Bearer {{tokenUser}}
+Content-Type: application/json
+
+{
+  "name": "Maria Silva",
+  "email": "maria@gmail.com",
+  "telephone": "(54) 98888-7777"
+}
+
+### Inscrever voluntário em evento com vagas
+POST {{baseURL}}/events/4/volunteers
+Authorization: Bearer {{tokenUser}}
+Content-Type: application/json
+
+{
+  "volunteer_id": 1
+}
+
+### Inscrever o mesmo voluntário de novo no evento
+POST {{baseURL}}/events/4/volunteers
+Authorization: Bearer {{tokenUser}}
+Content-Type: application/json
+
+{
+  "volunteer_id": 1
+}
+
+### Inscrever segundo voluntário no evento com capacidade 2
+POST {{baseURL}}/events/4/volunteers
+Authorization: Bearer {{tokenUser}}
+Content-Type: application/json
+
+{
+  "volunteer_id": 2
+}
+
+### Inscrever terceiro voluntário em evento lotado (capacidade 2) - 409
+POST {{baseURL}}/events/4/volunteers
+Authorization: Bearer {{tokenUser}}
+Content-Type: application/json
+
+{
+  "volunteer_id": 3
+}
+
+### Excluir voluntário
+DELETE {{baseURL}}/volunteers/2
+Authorization: Bearer {{tokenUser}}
