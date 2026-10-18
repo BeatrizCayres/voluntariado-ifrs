@@ -24,10 +24,14 @@ Instale as dependências:
 npm install
 ```
 
-Execute:
+Execute em 2 terminais os seguintes comandos para subir o front e o backend:
 
 ```bash
-npm run dev
+npm run dev:frontend
+```
+
+```bash
+npm run dev:backend
 ```
 
 ## 2. Usuários iniciais
