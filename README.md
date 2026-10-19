@@ -65,7 +65,7 @@ As operações POST, PUT e DELETE de eventos também utilizam
 
 Use o arquivo:
 
-`src/tests/events_api_test.rest`
+`src/tests/tests.rest`
 
 Depois do login, copie os tokens para as variáveis `tokenUser` e `tokenAdmin`
 no início do arquivo.
